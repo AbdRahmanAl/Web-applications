@@ -15,3 +15,6 @@ adds a new page to the book with title and ingredients
 
 A PATCH request to /book/category/delete with body {"index" : i}
 deletes the page at index i in the book
+
+A PATCH request to /book/delete with body {"category" : "name of the book's category"}
+deletes the book from the list of books
