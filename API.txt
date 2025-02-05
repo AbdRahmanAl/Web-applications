@@ -5,10 +5,12 @@ Response should be a 200 response with body the list of books
 A GET request to /book/pages
 Response should be a 200 response with body the list of pages for a given book category
 
+A GET request to /book/find with body { “recipe” : "name of the recipe" } will search all books for the recipe and return it if found.
+
 A POST request to /book with body { “category” : "name of the book's category" }
 creates a new book with the defined category.
 
-A PATCH request to /book/category with body { "title": "name of the recipe", "contents: "ingredients as a list of string" }
+A PATCH request to /book/category with body { "title": "name of the recipe", "contents: "ingredients as a list of strings" }
 adds a new page to the book with title and ingredients
 
 A PATCH request to /book/category/delete with body {"index" : i}
