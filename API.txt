@@ -1,0 +1,15 @@
+The server should accept
+A GET request to /book
+Response should be a 200 response with body the list of books
+
+A GET request to /book/pages
+Response should be a 200 response with body the list of pages for a given book category
+
+A POST request to /book with body { “category” : "name of the book's category" }
+creates a new book with the defined category.
+
+A PATCH request to /book/category with body { "title": "name of the recipe", "contents: "ingredients as a list of string" }
+adds a new page to the book with title and ingredients
+
+A PATCH request to /book/category/delete with body {"index" : i}
+deletes the page at index i in the book
