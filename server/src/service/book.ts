@@ -41,6 +41,15 @@ export class BookService {
         return "Page deleted";
     }
 
+    async removeBook(category: string) {
+        const book = this.books.find((book) => book.category === category);
+        if (! book) {
+            return "Book does not exist";
+        }
+        this.books = this.books.filter(obj => obj !== book);
+        return "Book deleted";
+    }
+
     async findRecipe(recipe: string) {
         for (const book of this.books) {
             for(let i=0; i<book.pages.length; i++){

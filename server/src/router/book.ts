@@ -56,6 +56,19 @@ bookRouter.post("/", async (
     }
 })
 
+bookRouter.patch("/delete", async (
+    req: Request<{}, {}, { category: string }>,
+    res: Response<Book | string>
+) => {
+    
+    try {
+        const newTask = await bookService.removeBook(req.body.category);
+        res.status(201).send(newTask);
+    } catch (e: any) {
+        res.status(500).send(e.message);
+    }
+});
+
 bookRouter.patch("/:category", async (
     req: Request<{ category: string }, {}, { title: string, contents: [string] }>,
     res: Response<Book | string>
