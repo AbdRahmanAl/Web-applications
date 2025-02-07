@@ -49,6 +49,11 @@ bookRouter.post("/", async (
 ) => {
     try {
         // TODO Type checking
+        const condition = await bookService.findbook(req.body.category);
+        if(condition) {
+        res.status(404).send("Book already exists");
+        return;
+        }
         const newTask = await bookService.addBook(req.body.category, []);
         res.status(201).send(newTask);
     } catch (e: any) {
@@ -62,8 +67,13 @@ bookRouter.post("/:category", async (
 ) => {
     
     try {
-        const newTask = await bookService.addPage(req.body.title, req.body.contents, req.params.category);
-        res.status(201).send(newTask);
+        const condition = await bookService.findbook(req.params.category);
+        if(condition) {
+            const newTask = await bookService.addPage(req.body.title, req.body.contents, req.params.category);
+            res.status(201).send(newTask);
+            return;
+        }
+        res.status(404).send("Book does not exist!");
     } catch (e: any) {
         res.status(500).send(e.message);
     }
@@ -76,7 +86,7 @@ bookRouter.patch("/delete", async (
     
     try {
         const newTask = await bookService.removeBook(req.body.category);
-        res.status(201).send(newTask);
+        res.status(200).send(newTask);
     } catch (e: any) {
         res.status(500).send(e.message);
     }
@@ -86,10 +96,9 @@ bookRouter.patch("/:category/delete", async (
     req: Request<{ category: string }, {}, { index: number}>,
     res: Response<Book | string>
 ) => {
-    
     try {
         const newTask = await bookService.removePage(req.body.index, req.params.category);
-        res.status(201).send(newTask);
+        res.status(200).send(newTask);
     } catch (e: any) {
         res.status(500).send(e.message);
     }

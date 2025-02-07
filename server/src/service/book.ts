@@ -27,9 +27,12 @@ export class BookService {
 
     async addPage(title: string, contents : [string], category: string) {
         const book = this.books.find((book) => book.category === category);
-        const page = {title, contents} as Page;
-        book?.pages.push(page);
-        return book;
+        if(book) {
+            const page = {title, contents} as Page;
+            book?.pages.push(page);
+            return book;
+        }
+        return "Book does not exist";
     }
 
     async removePage(index: number, category: string) {
@@ -48,6 +51,14 @@ export class BookService {
         }
         this.books = this.books.filter(obj => obj !== book);
         return "Book deleted";
+    }
+
+    async findbook(category: string) {
+        const book = this.books.find((book) => book.category === category);
+        if (! book) {
+            return false;
+        }
+        return true;
     }
 
     async findRecipe(recipe: string) {
