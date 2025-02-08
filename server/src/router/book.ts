@@ -19,24 +19,24 @@ bookRouter.get("/", async (
     }
 });
 
-bookRouter.get("/pages", async (
-    req: Request<{}, {}, {category : string}>,
+bookRouter.get("/pages/:category", async (
+    req: Request<{category : string}, {}, {}>,
     res: Response<Array<Page> | string>
 ) => {
     try {
-        const tasks = await bookService.getPages(req.body.category);
+        const tasks = await bookService.getPages(req.params.category);
         res.status(200).send(tasks);
     } catch (e: any) {
         res.status(500).send(e.message);
     }
 });
 
-bookRouter.get("/find", async (
-    req: Request<{}, {}, {recipe : string}>,
+bookRouter.get("/find/:recipe", async (
+    req: Request<{recipe : string}, {}, {}>,
     res: Response<Array<Page> | string>
 ) => {
     try {
-        const tasks = await bookService.findRecipe(req.body.recipe);
+        const tasks = await bookService.findRecipe(req.params.recipe);
         res.status(200).send(tasks);
     } catch (e: any) {
         res.status(500).send(e.message);
@@ -79,7 +79,7 @@ bookRouter.post("/:category", async (
     }
 });
 
-bookRouter.patch("/delete", async (
+bookRouter.delete("/delete", async (
     req: Request<{}, {}, { category: string }>,
     res: Response<Book | string>
 ) => {
@@ -92,7 +92,7 @@ bookRouter.patch("/delete", async (
     }
 });
 
-bookRouter.patch("/:category/delete", async (
+bookRouter.delete("/:category/delete", async (
     req: Request<{ category: string }, {}, { index: number}>,
     res: Response<Book | string>
 ) => {
