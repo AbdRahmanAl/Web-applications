@@ -22,7 +22,7 @@ export const setBookPages = (title: string, pages: Page[]) => {
   for (let i = 0; i < pages.length; i++) {
     const page = bookPages.find((page) => page.left === pages[i].title);
     if(!page) {
-      bookPages.push({title:title,left: pages[i].title, right: JSON.stringify(pages[i].contents)});
+      bookPages.push({title:title,left: pages[i].title, right: pages[i].contents.join('\n')});
     }
   }
 };
@@ -53,10 +53,10 @@ const Book = ( singleBook : Book) => {
         <div className="book-title text-center">{title}</div>
         <div className="book">
           <div className="book-page-left" id="left-page">
-            {left}
+            <pre>{left}</pre>
           </div>
           <div className="book-page-right" id="right-page">
-            {right}
+            <pre>{right}</pre>
           </div>
           <Button className="toggle-button toggle-left" onClick={prevPage}>
             &#60;
