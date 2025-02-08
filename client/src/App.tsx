@@ -31,7 +31,7 @@ function App() {
       <Routes>
         {thePageList.map((book: Book) => (
           <Route
-            path={`/${book.category.toLowerCase()}`}
+            path={`/${book.category}`}
             element={<Book category={book.category} pages={book.pages} />}
             key={book.category}
           />

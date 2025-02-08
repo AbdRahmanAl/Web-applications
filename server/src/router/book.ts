@@ -33,7 +33,7 @@ bookRouter.get("/pages/:category", async (
 
 bookRouter.get("/find/:recipe", async (
     req: Request<{recipe : string}, {}, {}>,
-    res: Response<Array<Page> | string>
+    res: Response< Page | string>
 ) => {
     try {
         const tasks = await bookService.findRecipe(req.params.recipe);

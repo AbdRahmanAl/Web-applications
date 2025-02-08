@@ -67,7 +67,7 @@ export class BookService {
                 let title : string = book.pages[i].title.toLowerCase();
                 let rec : string = recipe.toLowerCase();
                 if(title === rec){
-                    return JSON.stringify(book.pages[i]);
+                    return JSON.stringify({category: book.category, index: i});
                 }
             }
         }

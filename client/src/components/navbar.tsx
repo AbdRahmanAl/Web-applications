@@ -21,15 +21,15 @@ const NavigationBar = ({ books }: Catalogue) => {
         <Navbar.Collapse id="navbarNav">
           <Nav className="ms-auto">
             {/* Use Link component to handle navigation */}
-            <Nav.Link as={Link} to="/">
+            <Nav.Link as={Link} to="/" key={"home"}>
               Home
             </Nav.Link>
             {books.map((book: Book) => (
-            <Nav.Link as={Link} to={`/${book.category}`}>
+            <Nav.Link as={Link} to={`/${book.category}`} key={book.category}>
                 {book.category}
             </Nav.Link>
             ))}
-            <Nav.Link as={Link} to="/about">
+            <Nav.Link as={Link} to="/about" key={"about"}>
               About
             </Nav.Link>
           </Nav>

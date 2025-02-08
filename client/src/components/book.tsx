@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 import "../App.css"; // Import global CSS
+import Find from "./find";
 
 
 let bookPages: { title: string, left: string; right: string }[] = [];
@@ -66,6 +67,7 @@ const Book = ( singleBook : Book) => {
           </Button>
         </div>
       </div>
+      <div><Find /></div>
     </>
   );
 };
