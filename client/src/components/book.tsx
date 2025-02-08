@@ -1,21 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "react-bootstrap";
 import "../App.css"; // Import global CSS
-import axios from "axios";
 
-interface Book {
-  category: string;
-  pages: Page[];
-}
-
-interface Page {
-  title: string;
-  contents: [string];
-}
 
 let bookPages: { title: string, left: string; right: string }[] = [];
-let mainBooks: any[] = [];
 
+/*
 export const setBook = (importedBooks: Book[]) => {
   for (let i = 0; i < importedBooks.length; i++) {
     mainBooks[i] = {
@@ -25,40 +15,21 @@ export const setBook = (importedBooks: Book[]) => {
   for (let i = 0; i < mainBooks.length; i++) {
     setBookPages(mainBooks[i].book.category ,mainBooks[i].book.pages);
   }
-};
+}; */
 
 export const setBookPages = (title: string, pages: Page[]) => {
+  bookPages = [];
   for (let i = 0; i < pages.length; i++) {
     const page = bookPages.find((page) => page.left === pages[i].title);
     if(!page) {
       bookPages.push({title:title,left: pages[i].title, right: JSON.stringify(pages[i].contents)});
     }
   }
-  console.log(bookPages);
 };
 
-const Book = () => {
-  const [thePageList, setPageList] = useState<Book[]>([]);
+const Book = ( singleBook : Book) => {
 
-  async function updatePages() {
-    setTimeout(async () => {
-      try {
-        const response = await axios.get<Book[]>("http://localhost:8080/book");
-        const newPages: Book[] = response.data;
-        // TODO Check that tasks is a list of Pages
-        setPageList(newPages);
-      } catch (error: any) {
-        console.log(error);
-      }
-    }, 1000);
-  }
-
-  useEffect(() => {
-    // TODO Make the URL variable
-    updatePages();
-  }, []);
-
-  setBook(thePageList);
+  setBookPages(singleBook.category, singleBook.pages);
 
   const [currentPage, setCurrentPage] = useState(0);
 
