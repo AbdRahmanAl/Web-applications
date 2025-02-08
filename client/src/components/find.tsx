@@ -33,7 +33,9 @@ const Find = () => {
   }, []);
 
   return (
-    <><p>{lookUp}</p><form
+    <>
+    <p>Search for a recipe</p>
+    <p>{lookUp}</p><form
       onSubmit={async (e) => {
         e.preventDefault();
         updatePages();
