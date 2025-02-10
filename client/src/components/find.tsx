@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 let foundRecipe: { category: string, index: number } | string = {category: "", index: 0};
@@ -7,7 +7,7 @@ const Find = () => {
   const [newDescription, setNewDescription] = useState<string>("");
   const [lookUp, setNewRecipe] = useState<string>("");
 
-  async function updatePages() {
+  async function findRecipe() {
       try {
         if(newDescription !== "") {
           const path = 'http://localhost:8080/book/find/';
@@ -27,18 +27,13 @@ const Find = () => {
       }
   }
 
-  useEffect(() => {
-    // TODO Make the URL variable
-    updatePages();
-  }, []);
-
   return (
     <>
     <p>Search for a recipe</p>
     <p>{lookUp}</p><form
       onSubmit={async (e) => {
         e.preventDefault();
-        updatePages();
+        findRecipe();
       } }
     >
       <input

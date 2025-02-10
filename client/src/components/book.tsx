@@ -6,18 +6,6 @@ import Find from "./find";
 
 let bookPages: { title: string, left: string; right: string }[] = [];
 
-/*
-export const setBook = (importedBooks: Book[]) => {
-  for (let i = 0; i < importedBooks.length; i++) {
-    mainBooks[i] = {
-      book: importedBooks[i],
-    };
-  }
-  for (let i = 0; i < mainBooks.length; i++) {
-    setBookPages(mainBooks[i].book.category ,mainBooks[i].book.pages);
-  }
-}; */
-
 export const setBookPages = (title: string, pages: Page[]) => {
   bookPages = [];
   for (let i = 0; i < pages.length; i++) {
