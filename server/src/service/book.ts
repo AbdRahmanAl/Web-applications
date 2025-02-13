@@ -35,6 +35,7 @@ export class BookService {
         return "Book does not exist";
     }
 
+
     async removePage(index: number, category: string) {
         const book = this.books.find((book) => book.category === category);
         if (! book?.pages[index]) {
@@ -74,4 +75,19 @@ export class BookService {
         return "Recipe does not exist";
     }
 
+
+ async makeTask(description: string): Promise<{ id_nr: number; description: string }> {
+  const pages: Page[] = [{ title: "Task", contents: [description] }];
+
+  this.books.push({
+    category: "tasks",
+    pages: pages,
+    });
+
+  return {
+    id_nr: Date.now(),
+    description,
+        };
+    }
 }
+
