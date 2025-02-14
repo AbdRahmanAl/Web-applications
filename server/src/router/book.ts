@@ -104,20 +104,25 @@ bookRouter.delete("/:category/delete", async (
     }
 });
 
-/*bookRouter.put("/task", async (req, res) => {
+
+bookRouter.put("/task", async (
+    req: Request<{}, {}, { description: string }>, 
+    res: Response<any>
+) => {
     try {
-        const { description } = req.body;
+        const description = req.body.description;
 
         if (typeof description !== 'string') {
             return res.status(400).send("Task description must be a string");
         }
 
         const newTask = await bookService.makeTask(description);
+
+        // Return the task with a success message
         res.status(201).json({
-            message: "Task successfully implemented",
-            task: newTask
-        });
-    } catch (e) {
-        res.status(500).send(e.message);
+            message: "Task created successfully",
+            task: newTask});
+    } catch (e: any) {
+        res.status(500).send({ error: e.message });
     }
-});*/
+});
