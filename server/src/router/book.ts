@@ -65,7 +65,7 @@ bookRouter.post("/:category", async (
     req: Request<{ category: string }, {}, { title: string, contents: [string] }>,
     res: Response<Book | string>
 ) => {
-    
+
     try {
         const condition = await bookService.findbook(req.params.category);
         if(condition) {
@@ -83,7 +83,7 @@ bookRouter.delete("/delete", async (
     req: Request<{}, {}, { category: string }>,
     res: Response<Book | string>
 ) => {
-    
+
     try {
         const newTask = await bookService.removeBook(req.body.category);
         res.status(200).send(newTask);
@@ -100,6 +100,24 @@ bookRouter.delete("/:category/delete", async (
         const newTask = await bookService.removePage(req.body.index, req.params.category);
         res.status(200).send(newTask);
     } catch (e: any) {
+        res.status(500).send(e.message);
+    }
+});
+
+bookRouter.put("/task", async (req, res) => {
+    try {
+        const { description } = req.body;
+
+        if (typeof description !== 'string') {
+            return res.status(400).send("Task description must be a string");
+        }
+
+        const newTask = await bookService.makeTask(description);
+        res.status(201).json({
+            message: "Task successfully implemented",
+            task: newTask
+        });
+    } catch (e) {
         res.status(500).send(e.message);
     }
 });
