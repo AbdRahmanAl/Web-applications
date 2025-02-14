@@ -104,7 +104,7 @@ bookRouter.delete("/:category/delete", async (
     }
 });
 
-bookRouter.put("/task", async (req, res) => {
+/*bookRouter.put("/task", async (req, res) => {
     try {
         const { description } = req.body;
 
@@ -120,4 +120,4 @@ bookRouter.put("/task", async (req, res) => {
     } catch (e) {
         res.status(500).send(e.message);
     }
-});
+});*/
