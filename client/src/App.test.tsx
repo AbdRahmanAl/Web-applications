@@ -1,34 +1,66 @@
-import { render, fireEvent } from '@testing-library/react';
-import { screen } from '@testing-library/dom';
-import App from './App';
+import { render } from "@testing-library/react";
+import { screen } from "@testing-library/dom";
+import userEvent from "@testing-library/user-event";
+import App from "./App";
 
-describe('App Component', () => {
-  test('renders the heading Vite + React', () => {
+describe("App Component", () => {
+  test("checks if the footer exists", () => {
     render(<App />);
-    const headingElement = screen.getByText(/Vite \+ React/i);
-    expect(headingElement).toBeInTheDocument();
+    const footerText = screen.getByText(/copyright 2025/i);
+    expect(footerText).toBeInTheDocument();
   });
 
-  test('renders the initial count value of 0', () => {
+  test("checks if the buttons home and about exist", () => {
     render(<App />);
-    const countButton = screen.getByRole('button', { name: /count is 0/i });
-    expect(countButton).toBeInTheDocument();
+    const homeButton = screen.getByText(/home/i);
+    expect(homeButton).toBeInTheDocument();
+
+    const aboutButton = screen.getByText(/about/i);
+    expect(aboutButton).toBeInTheDocument();
   });
 
-  test('increments the count when the button is clicked', () => {
+  test("checks if the navigation bar exists and that it works", () => {
     render(<App />);
-    const countButton = screen.getByRole('button', { name: /count is 0/i });
-    
-    fireEvent.click(countButton);
-    expect(countButton).toHaveTextContent('count is 1');
-    
-    fireEvent.click(countButton);
-    expect(countButton).toHaveTextContent('count is 2');
+    const navElement = screen.getByRole("navigation");
+    expect(navElement).toBeInTheDocument();
+
+    const loginLink = screen.getByText(/login/i);
+    expect(loginLink).toBeInTheDocument();
+
+    const homeLink = screen.getByText(/home/i);
+    expect(homeLink).toBeInTheDocument();
+
+    const aboutLink = screen.getByText(/about/i);
+    expect(aboutLink).toBeInTheDocument();
+
+    setTimeout(() => {
+      userEvent.click(aboutLink);
+      expect(window.location.pathname).toBe("/about");
+    }, 500);
   });
 
-  test('renders the "read the docs" paragraph', () => {
+  test("checks if login page has a link that redirects to register page and that it works", () => {
     render(<App />);
-    const docsParagraph = screen.getByText(/Click on the Vite and React logos to learn more/i);
-    expect(docsParagraph).toBeInTheDocument();
+    setTimeout(() => {
+      const link = screen.getByText(/Register new user/i);
+      userEvent.click(link);
+      expect(window.location.pathname).toBe("/register");
+    }, 1000);
+  });
+
+  test("checks if registration page works and redirects to login page", () => {
+    render(<App />);
+    setTimeout(() => {
+      const link = screen.getByText(/Register new user/i);
+      userEvent.click(link);
+      expect(window.location.pathname).toBe("/register");
+      const usernameField = screen.getByLabelText(/username/i);
+      const passwordField = screen.getByLabelText(/password/i);
+      const submitButton = screen.getByRole("button", { name: /Register/i });
+      userEvent.type(usernameField, "alpha");
+      userEvent.type(passwordField, "123");
+      userEvent.click(submitButton);
+      expect(window.location.pathname).toBe("/login");
+    }, 1000);
   });
 });

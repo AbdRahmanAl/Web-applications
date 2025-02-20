@@ -91,11 +91,14 @@ const Book = (singleBook: Book) => {
             </div>
             <div className="col">
               <br />
-              <p>Add a new Recipe</p>
+              <p>Add a new Recipe, seperate the ingredients with a comma</p>
               <form
                 onSubmit={async (e) => {
                   e.preventDefault();
                   addPage(singleBook.category, newTitle, newIngredients);
+                  setTimeout(() => {
+                    window.location.reload()
+                  }, 1000);
                 }}
               >
                 <label>

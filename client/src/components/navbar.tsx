@@ -9,7 +9,7 @@ const NavigationBar = ({ books }: Catalogue) => {
       style={{ borderRadius: "30px", backgroundColor: "#007bff" }}
     >
       <Container fluid>
-        <Navbar.Brand href="#">
+        <Navbar.Brand href="/">
           <img
             src="https://www.svgrepo.com/show/214412/cookbook-chef.svg"
             width="50px"
@@ -20,8 +20,10 @@ const NavigationBar = ({ books }: Catalogue) => {
         <Navbar.Toggle aria-controls="navbarNav" />
         <Navbar.Collapse id="navbarNav">
           <Nav className="ms-auto">
-            {/* Use Link component to handle navigation */}
-            <Nav.Link as={Link} to="/" key={"home"}>
+          <Nav.Link as={Link} to="/login" key={"login"}>
+              Login
+            </Nav.Link>
+            <Nav.Link as={Link} to="/home" key={"home"}>
               Home
             </Nav.Link>
             {books.map((book: Book) => (
