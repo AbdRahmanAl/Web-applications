@@ -1,9 +1,12 @@
 import {User} from "../model/user";
 import bcrypt from "bcrypt";
+import {IUserService} from "./IUserService";
 
 const salt = bcrypt.genSaltSync(10);
 
-export class UserService{
+//export class UserService{
+    export class UserService implements IUserService {
+
     users : User[] = [];
 
     async createUser(username: string, password: string) {

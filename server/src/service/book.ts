@@ -2,14 +2,23 @@ import { Book } from "../model/book";
 import { Page } from "../model/page";
 import { User } from "../model/user";
 import { UserService } from "./user";
+import {IBookService} from "../service/IBookService";
 
-export class BookService {
+
+//export class BookService {
+  export class BookService implements IBookService {
+  
+
   private userService: UserService;
   
   constructor(userService: UserService) {
     this.userService = userService;
   }
 
+  
+
+
+  
   // Returns a deep copy of the current list of books
   async getBooks(username: string): Promise<Book[]> {
     const user : User | undefined = await this.userService.findUser(username);
