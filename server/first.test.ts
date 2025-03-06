@@ -1,3 +1,4 @@
+import test from "node:test";
 import { BookService } from "./src/service/book";
 import { UserService } from "./src/service/user";
 
@@ -11,3 +12,4 @@ test("If a category is added to the books then it should be in the list", async 
     const books = await bookService.getBooks(username);
     expect(books.some((book) => book.category === category)).toBeTruthy;
 })
+

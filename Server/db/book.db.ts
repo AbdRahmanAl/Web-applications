@@ -1,12 +1,12 @@
-import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
+import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional, ForeignKey } from 'sequelize';
 import { sequelize } from './conn';
 import { PageModel } from './page.db';
-
+import { UserModel } from './user.db';
 export class BookModel extends Model<InferAttributes<BookModel>, InferCreationAttributes<BookModel>> {
     declare id: CreationOptional<number>;
     declare category: string;
+    declare userId: ForeignKey<UserModel['id']>;
 }
-
 BookModel.init(
     {
         id: {
@@ -17,6 +17,10 @@ BookModel.init(
         category: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        userId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     },
     {
@@ -25,6 +29,10 @@ BookModel.init(
     }
 );
 
-// Associations
-BookModel.hasMany(PageModel, { foreignKey: 'bookId' });
+BookModel.hasMany(PageModel, { foreignKey: 'bookId', onDelete: "CASCADE" }); // Deletes pages when book is deleted
 PageModel.belongsTo(BookModel, { foreignKey: 'bookId' });
+
+export default BookModel;
+
+
+
