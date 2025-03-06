@@ -35,3 +35,4 @@ UserModel.init(
 // Associations
 UserModel.hasMany(BookModel, { foreignKey: 'userId' });
 BookModel.belongsTo(UserModel, { foreignKey: 'userId' });
+
