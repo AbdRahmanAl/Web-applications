@@ -1,12 +1,15 @@
-import { Model, DataTypes, CreationOptional } from 'sequelize';
+import { Model, DataTypes, CreationOptional, ForeignKey } from 'sequelize';
 import { sequelize } from './conn';
 import { BookModel } from './book.db';
+
 
 export class PageModel extends Model {
     declare id: CreationOptional<number>;
     declare title: string;
-    declare contents: string;
+    declare contents: string[];
+    declare bookId: ForeignKey<BookModel['id']>;
 }
+
 
 PageModel.init(
     {
@@ -20,7 +23,11 @@ PageModel.init(
             allowNull: false
         },
         contents: {
-            type: DataTypes.TEXT,
+            type: DataTypes.ARRAY(DataTypes.STRING),
+            allowNull: false
+        },
+        bookId: {
+            type: DataTypes.INTEGER,
             allowNull: false
         }
     },
@@ -32,5 +39,8 @@ PageModel.init(
 
 
 // Associations
-BookModel.hasMany(PageModel, { foreignKey: 'bookId' });
+BookModel.hasMany(PageModel, { foreignKey: 'bookId', onDelete: "CASCADE" });
 PageModel.belongsTo(BookModel, { foreignKey: 'bookId' });
+
+export default PageModel;
+
