@@ -103,7 +103,7 @@ export class BookService implements IBookService {
       const pages = await PageModel.findAll({ where: { bookId: book.id } });
       for (let i = 0; i < pages.length; i++) {
         if (pages[i].title.toLowerCase() === recipe.toLowerCase()) {
-        return `Found in category: ${book.category}, at index ${i}`;
+        return JSON.stringify({ category: book.category, index: i});
         }
       }
     }
