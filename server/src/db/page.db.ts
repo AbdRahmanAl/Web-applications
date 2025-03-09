@@ -6,7 +6,7 @@ import { BookModel } from './book.db';
 export class PageModel extends Model {
     declare id: CreationOptional<number>;
     declare title: string;
-    declare contents: string[];
+    declare contents: [string];
     declare bookId: ForeignKey<BookModel['id']>;
 }
 
@@ -36,11 +36,6 @@ PageModel.init(
         modelName: 'Page'
     }
 );
-
-
-// Associations
-BookModel.hasMany(PageModel, { foreignKey: 'bookId', onDelete: "CASCADE" });
-PageModel.belongsTo(BookModel, { foreignKey: 'bookId' });
 
 export default PageModel;
 

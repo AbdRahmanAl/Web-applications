@@ -18,7 +18,6 @@ function App() {
     try {
       const response = await axios.get<Book[]>("http://localhost:8080/book");
       const newPages: Book[] = response.data;
-      // TODO Check that tasks is a list of Pages
       setPageList(newPages);
     } catch (error: any) {
       if (error.response && error.response.status === 401) {
@@ -30,7 +29,6 @@ function App() {
   }
 
   useEffect(() => {
-    // TODO Make the URL variable
     updatePages();
   }, []);
 

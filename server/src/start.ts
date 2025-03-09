@@ -31,6 +31,6 @@ app.use((req, res, next) => {
 
 app.use(express.json()); // Middleware
 const userService = new UserService();
-const bookService = new BookService(userService);
+const bookService = new BookService();
 app.use(bookRouter(bookService));
 app.use(userRouter(userService));

@@ -1,6 +1,6 @@
-import { BookModel } from "./db/book.db";
-import { PageModel } from "./db/page.db";
-import { UserModel } from "./db/user.db";
+import { BookModel } from "../db/book.db";
+import { PageModel } from "../db/page.db";
+import { UserModel } from "../db/user.db";
 import { IBookService } from "./IBookService";
 import { Book } from "../model/book";
 import { Page } from "../model/page";
@@ -12,7 +12,7 @@ export class BookService implements IBookService {
     if (!user) return [];
 
     const books = await BookModel.findAll({ where: { userId: user.id } });
-    return books.map((book : Book) => ({ category: book.category, pages: [] }));
+    return books.map((book : BookModel) => ({ category: book.category, pages: []}));
   }
 
   async getPages(username: string, category: string): Promise<Page[]> {
@@ -29,6 +29,10 @@ export class BookService implements IBookService {
   async addBook(username: string, category: string, pages: Page[]): Promise<Book> {
     const user = await UserModel.findOne({ where: { username } });
     if (!user) throw new Error("User does not exist");
+
+    const exists = await BookModel.findOne({where: {category, userId: user.id}});
+
+    if(exists) throw new Error("Book already exists");
 
     const book = await BookModel.create({ category, userId: user.id });
 

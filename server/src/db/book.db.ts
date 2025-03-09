@@ -29,6 +29,7 @@ BookModel.init(
     }
 );
 
+// Associations
 BookModel.hasMany(PageModel, { foreignKey: 'bookId', onDelete: "CASCADE" }); // Deletes pages when book is deleted
 PageModel.belongsTo(BookModel, { foreignKey: 'bookId' });
 

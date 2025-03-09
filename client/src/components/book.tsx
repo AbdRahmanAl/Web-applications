@@ -1,22 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import "../App.css"; // Import global CSS
 import Find from "./find";
 import axios from "axios";
+
+axios.defaults.withCredentials = true;
 
 let bookPages: { title: string; left: string; right: string }[] = [];
 
 export const setBookPages = (title: string, pages: Page[]) => {
   bookPages = [];
   for (let i = 0; i < pages.length; i++) {
-    const page = bookPages.find((page) => page.left === pages[i].title);
-    if (!page) {
-      bookPages.push({
-        title: title,
-        left: pages[i].title,
-        right: pages[i].contents.join("\n"),
-      });
-    }
+    let contents = String(pages[i].contents)
+      .replace(/[{}"]/g, "") // Remove curly braces and quotes
+      .split(",") // Split by commas
+      .map((item) => item.trim()) // Trim each item to remove extra spaces
+      .join("\n");
+
+    bookPages.push({
+      title: title,
+      left: pages[i].title,
+      right: contents,
+    });
   }
 };
 
@@ -38,15 +43,45 @@ const addPage = (category: string, title: string, ingredients: string[]) => {
     });
 };
 
-const Book = (singleBook: Book) => {
-  setBookPages(singleBook.category, singleBook.pages);
+async function updatePages(category: string) {
+  try {
+    const response = await axios.get<Page[]>("http://localhost:8080/book/pages/" + category);
+    const newPages: Page[] = response.data;
+    return newPages;
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      console.log("Unauthorized: You need to log in.");
+    } else {
+      console.log(error);
+    }
+  }
+}
 
+async function updateAndSetPages(category: string) {
+  const pages = await updatePages(category);  // Await the promise
+
+  if (pages !== undefined) {  // Check if pages is not undefined
+    setBookPages(category, pages);
+  }
+}
+
+const Book = (singleBook: Book) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [newTitle, setNewTitle] = useState<string>("");
   const [newIngredients, setNewIngredients] = useState<string[]>([""]);
+  const [isLoading, setIsLoading] = useState(true);  // State to track loading
+
+  useEffect(() => {
+    const fetchPages = async () => {
+      await updateAndSetPages(singleBook.category);
+      setIsLoading(false);  // Set loading state to false when the pages are fetched
+    };
+
+    fetchPages();
+  });
 
   const nextPage = () => {
-    if (currentPage < Object.keys(bookPages).length - 1) {
+    if (currentPage < bookPages.length - 1) {
       setCurrentPage((prevPage) => prevPage + 1);
     }
   };
@@ -56,6 +91,11 @@ const Book = (singleBook: Book) => {
       setCurrentPage((prevPage) => prevPage - 1);
     }
   };
+
+  // Handle the case when the pages are still loading
+  if (isLoading) {
+    return <div>Loading...</div>;  // You can show a loading spinner or a message
+  }
 
   let { title, left, right } = bookPages[currentPage] || {
     title: "",
@@ -91,13 +131,13 @@ const Book = (singleBook: Book) => {
             </div>
             <div className="col">
               <br />
-              <p>Add a new Recipe, seperate the ingredients with a comma</p>
+              <p>Add a new Recipe, separate the ingredients with a comma</p>
               <form
                 onSubmit={async (e) => {
                   e.preventDefault();
                   addPage(singleBook.category, newTitle, newIngredients);
                   setTimeout(() => {
-                    window.location.reload()
+                    window.location.reload();
                   }, 1000);
                 }}
               >

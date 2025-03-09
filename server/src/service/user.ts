@@ -1,6 +1,7 @@
 import {User} from "../model/user";
 import bcrypt from "bcrypt";
 import {IUserService} from "./IUserService";
+import UserModel from "../db/user.db";
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -10,18 +11,26 @@ const salt = bcrypt.genSaltSync(10);
     users : User[] = [];
 
     async createUser(username: string, password: string) {
-        this.users.push({
+        /*this.users.push({
             username: username,
             password: bcrypt.hashSync(password, salt),
             books: []
-        });
+        });*/
+        UserModel.create({ username: username, password: bcrypt.hashSync(password, salt)});
     }
 
     async findUser(username: string, password ?: string): Promise<User | undefined> {
+        const user = await UserModel.findOne({ where: { username } });
         if (! password) {
-            return this.users.find((user) => user.username === username);
+            if(!user) {
+                return undefined;
+            } else {
+                return user;
+            }
         }
-        return this.users.find((user) => user.username === username && bcrypt.compare(password, user.password));
+        if(user?.username === username && await bcrypt.compare(password, user.password)) {
+            return user;
+        }
     }
 
 }

@@ -36,3 +36,5 @@ UserModel.init(
 UserModel.hasMany(BookModel, { foreignKey: 'userId' });
 BookModel.belongsTo(UserModel, { foreignKey: 'userId' });
 
+export default UserModel;
+
