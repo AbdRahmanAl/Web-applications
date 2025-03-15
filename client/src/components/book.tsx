@@ -6,8 +6,10 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
+// Array to store book pages
 let bookPages: { title: string; left: string; right: string }[] = [];
 
+//Update the bookPages array with formatted content from fetched pages.
 export const setBookPages = (title: string, pages: Page[]) => {
   bookPages = [];
   for (let i = 0; i < pages.length; i++) {
@@ -25,6 +27,7 @@ export const setBookPages = (title: string, pages: Page[]) => {
   }
 };
 
+//Adds a new page (recipe) to the selected book category.
 const addPage = (category: string, title: string, ingredients: string[]) => {
   const path = "http://localhost:8080/book/page/";
   const data = {
@@ -43,6 +46,7 @@ const addPage = (category: string, title: string, ingredients: string[]) => {
     });
 };
 
+//Fetch all pages from a specific book category.
 async function updatePages(category: string) {
   try {
     const response = await axios.get<Page[]>("http://localhost:8080/book/pages/" + category);
@@ -57,6 +61,7 @@ async function updatePages(category: string) {
   }
 }
 
+//Fetch and updates book pages for a given category.
 async function updateAndSetPages(category: string) {
   const pages = await updatePages(category);  // Await the promise
 
@@ -65,6 +70,7 @@ async function updateAndSetPages(category: string) {
   }
 }
 
+//Book component responsible for displaying and managing a specific book.
 const Book = (singleBook: Book) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [newTitle, setNewTitle] = useState<string>("");
@@ -79,13 +85,15 @@ const Book = (singleBook: Book) => {
 
     fetchPages();
   });
-
+  
+  //Moves to the next page in the book.
   const nextPage = () => {
     if (currentPage < bookPages.length - 1) {
       setCurrentPage((prevPage) => prevPage + 1);
     }
   };
-
+  
+  //Moves to the previous page in the book.
   const prevPage = () => {
     if (currentPage > 0) {
       setCurrentPage((prevPage) => prevPage - 1);
@@ -173,4 +181,4 @@ const Book = (singleBook: Book) => {
   );
 };
 
-export default Book;
+export default Book;// Export Book component for use in the application
