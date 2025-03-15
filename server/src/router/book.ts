@@ -3,13 +3,15 @@ import { BookService } from "../service/book";
 import { Book } from "../model/book";
 import { Page } from "../model/page";
 
+//Create and return a router for handling book-related API endpoints.
 export function bookRouter(bookService: BookService): Router {
-  const bookRouter = express.Router();
+  const bookRouter = express.Router();// Initialize the router
 
   interface BookRequest {
     session: any;
   }
-
+  
+  //Retrieve all books for the logged-in user.
   bookRouter.get(
     "/book",
     async (req: BookRequest, res: Response<Array<Book> | String>) => {
@@ -19,7 +21,7 @@ export function bookRouter(bookService: BookService): Router {
           return;
         }
 
-        const books = await bookService.getBooks(req.session.username);
+        const books = await bookService.getBooks(req.session.username); // Fetch user's books
         res.status(200).send(books);
       } catch (e: any) {
         res.status(500).send(e.message);
@@ -31,7 +33,8 @@ export function bookRouter(bookService: BookService): Router {
     params: { category: string };
     session: any;
   }
-
+  
+  //Retrieve all pages from a specific book category.
   bookRouter.get(
     "/book/pages/:category",
     async (req: GetBookPagesRequest, res: Response<Array<Page> | string>) => {
@@ -51,7 +54,8 @@ export function bookRouter(bookService: BookService): Router {
     params: { recipe: string };
     session: any;
   }
-
+  
+  //Searche for a specific recipe across all books.
   bookRouter.get(
     "/book/find/:recipe",
     async (req: GetRecipeRequest, res: Response<Page | string>) => {
@@ -71,7 +75,8 @@ export function bookRouter(bookService: BookService): Router {
     body: { category: string };
     session: any;
   }
-
+  
+  //Add a new book (category) for the logged-in user.
   bookRouter.post(
     "/book",
     async (req: NewBookRequest, res: Response<Book | string>) => {
@@ -105,7 +110,8 @@ export function bookRouter(bookService: BookService): Router {
     body: { title: string; contents: [string] };
     session: any;
   }
-
+  
+  //Add a new page (recipe) to an existing book category.
   bookRouter.post(
     "/book/:category",
     async (req: NewPageRequest, res: Response<Book | string>) => {
@@ -136,6 +142,7 @@ export function bookRouter(bookService: BookService): Router {
     session: any;
   }
 
+  //Delete an entire book category
   bookRouter.delete(
     "/book/delete",
     async (req: DeleteBookRequest, res: Response<Book | string>) => {
@@ -157,6 +164,7 @@ export function bookRouter(bookService: BookService): Router {
     session: any;
   }
 
+  //Delete a specific page from a book
   bookRouter.delete(
     "/book/:category/delete",
     async (req: DeletePageRequest, res: Response<Book | string>) => {
@@ -177,7 +185,10 @@ export function bookRouter(bookService: BookService): Router {
     body: { category: string; title: string; ingredients: [string] };
     session: any;
   }
-
+/**
+   * Add a new recipe page to a book category.
+   * Ensure input validation before proceeding.
+   */
   bookRouter.put(
     "/book/page",
     async (req: AddPageRequest, res: Response<any>) => {
@@ -212,5 +223,5 @@ export function bookRouter(bookService: BookService): Router {
       }
     }
   );
-  return bookRouter;
+  return bookRouter; // Return the configured router
 }
