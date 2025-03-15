@@ -15,6 +15,7 @@ export class BookService implements IBookService {
     return books.map((book : BookModel) => ({ category: book.category, pages: []}));
   }
 
+  /Retrieve all pages from a specific book category.
   async getPages(username: string, category: string): Promise<Page[]> {
     const user = await UserModel.findOne({ where: { username } });
     if (!user) return [];
@@ -26,6 +27,7 @@ export class BookService implements IBookService {
     return pages.map((page : Page) => ({ title: page.title, contents: page.contents }as Page));
   }
 
+  //Add a new book (category) for the user.
   async addBook(username: string, category: string, pages: Page[]): Promise<Book> {
     const user = await UserModel.findOne({ where: { username } });
     if (!user) throw new Error("User does not exist");
@@ -44,7 +46,7 @@ export class BookService implements IBookService {
 
     return { category: book.category, pages };
   }
-
+  //Add a new recipe (page) to an existing book category.
   async addPage(username: string, title: string, contents: string[], category: string): Promise<string | Book> {
     //find user by username
     const user = await UserModel.findOne({ where: { username } });
@@ -60,6 +62,7 @@ export class BookService implements IBookService {
   return { category: book.category, pages: await PageModel.findAll({ where: { bookId: book.id } }) };
   }
 
+  //Delete an entire book category.
   async removeBook(username: string, category: string): Promise<string> {
     const user = await UserModel.findOne({ where: { username } });
     if (!user) return "User does not exist";
@@ -71,6 +74,7 @@ export class BookService implements IBookService {
     return "Book deleted";
   }
 
+  //Delete a specific recipe (page) from a book.
   async removePage(username: string, index: number, category: string): Promise<string> {
     const user = await UserModel.findOne({ where: { username } });
     if (!user) return "User does not exist";
@@ -85,6 +89,7 @@ export class BookService implements IBookService {
     return "Page deleted";
   }
 
+  //Check if a book exists for a user.
   async findbook(username: string, category: string): Promise<boolean> {
     const user = await UserModel.findOne({ where: { username } });
     if (!user) return false;
@@ -93,6 +98,7 @@ export class BookService implements IBookService {
     return book !== null;
   }
 
+  //Search for a specific recipe across all books.
   async findRecipe(username: string, recipe: string): Promise<string | undefined> {
     const user = await UserModel.findOne({ where: { username } });
     if (!user) return "User does not exist";
