@@ -16,7 +16,9 @@ const salt = bcrypt.genSaltSync(10);
             password: bcrypt.hashSync(password, salt),
             books: []
         });*/
-        UserModel.create({ username: username, password: bcrypt.hashSync(password, salt)});
+        if(!this.findUser(username) || this.findUser(username) == undefined) {
+            UserModel.create({ username: username, password: bcrypt.hashSync(password, salt)});
+        }
     }
 
     async findUser(username: string, password ?: string): Promise<User | undefined> {
