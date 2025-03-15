@@ -1,5 +1,6 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';// Import Bootstrap styles for responsive design
 
+// About Page Component
 const AboutPage = () => {
   return (
     <div>
@@ -39,4 +40,4 @@ const AboutPage = () => {
   );
 };
 
-export default AboutPage;
+export default AboutPage;// Export AboutPage component for use in the app
