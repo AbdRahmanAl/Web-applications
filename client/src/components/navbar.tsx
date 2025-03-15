@@ -5,16 +5,22 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
+//component for handling site navigation.
 const NavigationBar = ({ books }: Catalogue) => {
   const navigate = useNavigate(); // useNavigate is used to programmatically navigate
-
+ 
+  //Handles category selection and reloads the page.
   const handleCategoryClick = (category: string) => {
     // First navigate to the category page
     navigate(`/${category}`);
     // Then reload the page
     window.location.reload();
   };
-
+  
+  /**
+   * Logs out the user by sending a request to the backend.
+   * On success, the page is reloaded to reflect logout status.
+   */
   const handleLogout = async () => {
     try {
       // Make the logout request
