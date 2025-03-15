@@ -9,17 +9,20 @@ import NewBook from "./components/newbook";
 import { LoginScreen } from "./LoginScreen";
 import { RegisterScreen } from "./RegisterScreen";
 
+// Enable credentials for Axios requests
 axios.defaults.withCredentials = true;
 
 function App() {
   const [thePageList, setPageList] = useState<Book[]>([]);
-
-  async function updatePages() {
+  
+ 
+  async function updatePages() { // Function to fetch books from the backend
     try {
-      const response = await axios.get<Book[]>("http://localhost:8080/book");
-      const newPages: Book[] = response.data;
-      setPageList(newPages);
-    } catch (error: any) {
+      const response = await axios.get<Book[]>("http://localhost:8080/book");// Fetch books from backend
+      const newPages: Book[] = response.data;// Extract book data
+      setPageList(newPages);// Update state with book list
+    } catch (error: any) { 
+      // Handle errors, including unauthorized access
       if (error.response && error.response.status === 401) {
         console.log("Unauthorized: You need to log in.");
       } else {
@@ -28,7 +31,7 @@ function App() {
     }
   }
 
-  useEffect(() => {
+  useEffect(() => {  // Fetch books when the component loads
     updatePages();
   }, []);
 
